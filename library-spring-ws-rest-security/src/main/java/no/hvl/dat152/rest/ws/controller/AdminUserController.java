@@ -31,22 +31,28 @@ public class AdminUserController {
 	
 	@PutMapping("/users/{id}")
 	// TODO authority annotation
+	@PreAuthorize("hasAuthority('SUPER_ADMIN')")
 	public ResponseEntity<Object> updateUserRole(@PathVariable("id") Long id, @RequestParam("role") String role) 
 			throws UserNotFoundException{
 		
 		// TODO
+		User user = userService.updateUserRole(id, role);
+
 		
-		return null;
+		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/users/{id}")
 	// TODO authority annotation
+	@PreAuthorize("hasAuthority('SUPER_ADMIN')")
 	public ResponseEntity<Object> deleteUserRole(@PathVariable("id") Long id, 
 			@RequestParam("role") String role) throws UserNotFoundException{
 		
 		// TODO
+		User user = userService.deleteUserRole(id, role);
+
 		
-		return null;
+		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 	
 }

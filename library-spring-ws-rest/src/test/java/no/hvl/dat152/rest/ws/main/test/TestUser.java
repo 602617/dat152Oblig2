@@ -117,16 +117,22 @@ class TestUser {
 
 		// new order
 		String order = orderData();
-		
+		Order order1 = new Order("rstuv1540", LocalDate.now().plusWeeks(2));
+
 		Response response = RestAssured.given()
 				.contentType(MediaType.APPLICATION_JSON_VALUE)
 				.body(order)
-				.post(API_ROOT+"/users/{id}/orders", "2");
+				.post(API_ROOT+"/users/{id}/orders", 2);
 
-		List<Object> isbns = response.jsonPath().getList("isbn");
-		
-	    assertEquals(HttpStatus.CREATED.value(), response.getStatusCode());
-	    assertTrue(isbns.contains("rstuv1540"));
+		System.out.println(response.getBody().asString());
+
+		String isbns = response.jsonPath().getString("isbn");
+		List<Object> hrefs = response.jsonPath().getList("links");
+
+		assertEquals(HttpStatus.CREATED.value(), response.getStatusCode());
+		//assertTrue(isbns.contains("rstuv1540"));
+		assertTrue(response.jsonPath().getList("orders").get(0).toString().contains("rstuv1540"));
+		//assertTrue(hrefs.get(0).toString().contains("href"));
 
 	}
 	

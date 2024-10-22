@@ -77,11 +77,13 @@ class TestAuthor {
 		
 		Author upd_author = new Author("Test22", "Author_2");
 		upd_author.setAuthorId(author.getAuthorId());
-		
+
 		Response response = RestAssured.given()
 				.contentType(MediaType.APPLICATION_JSON_VALUE)
 				.body(upd_author)
 				.put(API_ROOT+"/authors/{id}", upd_author.getAuthorId());
+
+
 	    
 	    assertEquals(HttpStatus.OK.value(), response.getStatusCode());
 	    assertEquals("Test22", response.jsonPath().get("firstname"));

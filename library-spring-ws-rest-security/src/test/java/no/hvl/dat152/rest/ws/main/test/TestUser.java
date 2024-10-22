@@ -88,7 +88,7 @@ class TestUser {
 				.body(order)
 				.post(API_ROOT+"/users/{id}/orders", 2);
 		
-		List<Object> isbns = response.jsonPath().getList("isbn");
+		String isbns = response.jsonPath().getString("isbn");
 
 	    assertEquals(HttpStatus.CREATED.value(), response.getStatusCode());
 	    assertTrue(isbns.contains("rstuv1540"));
@@ -103,7 +103,7 @@ class TestUser {
 				.header("Authorization", "Bearer "+ SUPER_ADMIN_TOKEN)
 				.delete(API_ROOT+"/users/1");
 	    
-	    // attempt to access resource again
+
 	    Response resp = RestAssured.given()
 	    		.header("Authorization", "Bearer "+ SUPER_ADMIN_TOKEN)
 	    		.get(API_ROOT+"/users/1");

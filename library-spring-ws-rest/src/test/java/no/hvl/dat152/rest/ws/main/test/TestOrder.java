@@ -1,9 +1,8 @@
 package no.hvl.dat152.rest.ws.main.test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.time.LocalDate;
+import java.util.List;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +15,8 @@ import io.restassured.response.Response;
 import no.hvl.dat152.rest.ws.exceptions.OrderNotFoundException;
 import no.hvl.dat152.rest.ws.model.Order;
 import no.hvl.dat152.rest.ws.service.OrderService;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
@@ -35,9 +36,19 @@ class TestOrder {
 				.param("page", 0)
 				.param("size", 4)
 				.get(API_ROOT+"/orders");
-		
+
+		System.out.println(response.getBody().asString());
+
 		assertEquals(HttpStatus.OK.value(), response.getStatusCode());
-		assertTrue(response.jsonPath().getList("isbn").size() > 0);
+
+
+		//assertTrue(response.jsonPath().getList("isbn").size() > 0);
+
+		List<String> isbns = response.jsonPath().getList("isbn", String.class);
+
+		// Ensure the list of ISBNs is not null and has items
+		assertNotNull(isbns, "The list of ISBNs should not be null.");
+		assertTrue(isbns.size() > 0, "The list of ISBNs should contain items.");
 	}
 	
 	@DisplayName("JUnit test for Paging @GetMapping(/orders) endpoint")
