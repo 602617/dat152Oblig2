@@ -46,20 +46,23 @@ public class OrderController {
 
 	// TODO - getAllBorrowOrders (@Mappings, URI=/orders, and method) + filter by expiry and paginate
     @GetMapping("/orders")
-    public ResponseEntity<Object> getAllBorrowOrders(@RequestParam(required = false) LocalDate expiry,
+    public ResponseEntity<List<Order>> getAllBorrowOrders(@RequestParam(required = false) LocalDate expiry,
                                                      @RequestParam(defaultValue = "0") int page,
                                                      @RequestParam(defaultValue = "3") int size) {
 
         Pageable pageable = PageRequest.of(page,size);
+        List<Order> orders;
 
 
         if (expiry != null) {
-            return new ResponseEntity<>(orderService.findByExpiryDate(expiry,pageable),HttpStatus.OK);
-
+            //return new ResponseEntity<>(orderService.findByExpiryDate(expiry,pageable),HttpStatus.OK);
+            orders = orderService.findByExpiryDate(expiry, pageable);
         }else {
-            return new ResponseEntity<>(orderService.findAllOrders(),HttpStatus.OK);
-
+            //return new ResponseEntity<>(orderService.findAllOrders(),HttpStatus.OK);
+            orders = orderService.findAllOrders(pageable);
         }
+
+        return new ResponseEntity<>(orders, HttpStatus.OK);
     }
 	
 	// TODO - getBorrowOrder (@Mappings, URI=/orders/{id}, and method)

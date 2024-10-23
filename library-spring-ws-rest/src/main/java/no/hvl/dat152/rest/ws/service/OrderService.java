@@ -49,9 +49,9 @@ public class OrderService {
 	}
 	
 	// TODO public List<Order> findAllOrders()
-	public List<Order> findAllOrders(){
-
-        return (List<Order>) orderRepository.findAll();
+	public List<Order> findAllOrders(Pageable pageable){
+		Page<Order> ordersPage = orderRepository.findAll(pageable);
+        return ordersPage.getContent();
 	}
 
 

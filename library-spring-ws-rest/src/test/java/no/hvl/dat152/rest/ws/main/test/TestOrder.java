@@ -15,6 +15,7 @@ import io.restassured.response.Response;
 import no.hvl.dat152.rest.ws.exceptions.OrderNotFoundException;
 import no.hvl.dat152.rest.ws.model.Order;
 import no.hvl.dat152.rest.ws.service.OrderService;
+import org.springframework.test.annotation.DirtiesContext;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -59,7 +60,8 @@ class TestOrder {
 				.param("page", 0)
 				.param("size", 2)
 				.get(API_ROOT+"/orders");
-		
+		System.out.println(response.getBody().asString());
+
 		assertEquals(HttpStatus.OK.value(), response.getStatusCode());
 		assertTrue(response.jsonPath().getList("isbn").size() == 2);
 	}
@@ -76,6 +78,7 @@ class TestOrder {
 	
 	@DisplayName("JUnit test for @PutMapping(/orders/{id}) endpoint")
 	@Test
+	@DirtiesContext
 	public void updateOrder_thenOK() throws OrderNotFoundException {
 	
 		Order order = orderService.findOrder(2L);
@@ -94,6 +97,7 @@ class TestOrder {
 	
 	@DisplayName("JUnit test for @DeleteMapping(/orders/{id}) endpoint")
 	@Test
+	@DirtiesContext
 	public void deleteOrderById_thenOK() {
 
 	    Response response = RestAssured.delete(API_ROOT+"/orders/1");
